@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../include/raylib.h"
-#include "../include/raymath.h"
+#include "include/raylib.h"
+#include "include/raymath.h"
 #define VERSION "development"
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
