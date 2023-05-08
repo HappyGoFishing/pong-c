@@ -1,0 +1,88 @@
+#include <raylib.h>
+
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 450
+#define BALL_SPEED 5
+#define PADDLE_SPEED 10
+
+int main(void)
+{
+    // Initialize Window
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pong");
+
+    // Ball
+    Rectangle ball = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 20, 20 };
+    Vector2 ball_speed = { BALL_SPEED, BALL_SPEED };
+
+    // Player Paddle
+    Rectangle player_paddle = { 20, SCREEN_HEIGHT / 2 - 50, 20, 100 };
+    Vector2 player_paddle_speed = { 0, PADDLE_SPEED };
+
+    // Opponent Paddle
+    Rectangle opponent_paddle = { SCREEN_WIDTH - 40, SCREEN_HEIGHT / 2 - 50, 20, 100 };
+    Vector2 opponent_paddle_speed = { 0, PADDLE_SPEED };
+
+    // Game Loop
+    while (!WindowShouldClose())
+    {
+        // Update
+        ball.x += ball_speed.x;
+        ball.y += ball_speed.y;
+
+        if (CheckCollisionCircleRec((Vector2){ ball.x + ball.width / 2, ball.y + ball.height / 2 }, ball.width / 2, player_paddle))
+        {
+            ball_speed.x *= -1.0f;
+            ball_speed.y = (ball.y + ball.height / 2 - player_paddle.y - player_paddle.height / 2) / 5.0f;
+        }
+
+        if (CheckCollisionCircleRec((Vector2){ ball.x + ball.width / 2, ball.y + ball.height / 2 }, ball.width / 2, opponent_paddle))
+        {
+            ball_speed.x *= -1.0f;
+            ball_speed.y = (ball.y + ball.height / 2 - opponent_paddle.y - opponent_paddle.height / 2) / 5.0f;
+        }
+
+        if (ball.y + ball.height >= SCREEN_HEIGHT || ball.y <= 0)
+        {
+            ball_speed.y *= -1.0f;
+        }
+
+        if (ball.x + ball.width >= SCREEN_WIDTH || ball.x <= 0)
+        {
+            ball.x = SCREEN_WIDTH / 2;
+            ball.y = SCREEN_HEIGHT / 2;
+            ball_speed.x *= -1.0f;
+            ball_speed.y = BALL_SPEED;
+        }
+
+        player_paddle.y += player_paddle_speed.y;
+
+        if (player_paddle.y <= 0 || player_paddle.y + player_paddle.height >= SCREEN_HEIGHT)
+        {
+            player_paddle_speed.y *= -1.0f;
+        }
+
+        opponent_paddle.y += opponent_paddle_speed.y;
+
+        if (opponent_paddle.y <= 0 || opponent_paddle.y + opponent_paddle.height >= SCREEN_HEIGHT)
+        {
+            opponent_paddle_speed.y *= -1.0f;
+        }
+
+        // Draw
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        DrawRectangleRec(ball, MAROON);
+
+        DrawRectangleRec(player_paddle, BLUE);
+
+        DrawRectangleRec(opponent_paddle, GREEN);
+
+        EndDrawing();
+    }
+
+    // Clean up
+    CloseWindow();
+
+    return 0;
+}

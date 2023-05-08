@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1681333678 source:c:\users\kiera\desktop\repos\pong-c\main.c
+	<stdio.h>
+	"include/raylib.h"
+	"include/raymath.h"
+
+1681331883 c:\users\kiera\desktop\repos\pong-c\include\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1681331883 c:\users\kiera\desktop\repos\pong-c\include\raymath.h
+	<math.h>
+
