@@ -11,7 +11,6 @@ typedef struct
     int posX;
     int posY;
     int speed;
-    int health;
     int width;
     int height;
 } Paddle;
@@ -35,12 +34,10 @@ void UpdateBall(Ball* ball)
     ball->posX += ball->speedX;
     ball->posY += ball->speedY;
 
-    if (ball->posY + ball->radius >= GetScreenHeight() || ball->posY - ball->radius <= 0)
-    {
+    if (ball->posY + ball->radius >= GetScreenHeight() || ball->posY - ball->radius <= 0) {
         ball->speedY *= -1;
     }
-    if (ball->posX  - 200  + ball->radius >= GetScreenHeight() || ball->posX - ball->radius <= 0)
-    {
+    if (ball->posX  - 200  + ball->radius >= GetScreenHeight() || ball->posX - ball->radius <= 0) {
         ball->speedX *= -1;
     }
 }
@@ -52,18 +49,16 @@ void CheckPaddleOutOfBounds(Paddle* paddle) {
             if (paddle->posY < -1) paddle->posY = 1;
 }
 
-void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle)
-{
 
-}
+
 int main()
 {
-    Paddle Paddle1 = {SCREEN_WIDTH - 25, SCREEN_WIDTH/2, 6, 3, 20, 80};
-    Paddle Paddle2 = {5, SCREEN_WIDTH/2, 6, 3, 20, 80};
+    Paddle Paddle1 = {SCREEN_WIDTH - 25, SCREEN_WIDTH/2, 6, 20, 80};
+    Paddle Paddle2 = {5, SCREEN_WIDTH/2, 6, 20, 80};
 
     Ball Ball1 = {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 20, 4, 4};
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "PongC");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "pong-c");
     SetTargetFPS(60);
     while (!WindowShouldClose())
         {
@@ -83,15 +78,10 @@ int main()
 
             BeginDrawing();
 
-
-
                 ClearBackground(BLACK);
                 DrawText("Kieran's Pong in C",40,20,30,YELLOW);
-                //Player 1
                 DrawRectangle(Paddle1.posX, Paddle1.posY, Paddle1.width, Paddle1.height, DARKBLUE);
-                //Player 2
                 DrawRectangle(Paddle2.posX, Paddle2.posY, Paddle2.width, Paddle2.height, DARKGREEN);
-                //Ball
                 DrawBall(&Ball1);
 
             EndDrawing();
