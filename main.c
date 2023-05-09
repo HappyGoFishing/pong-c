@@ -65,7 +65,6 @@ int main()
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "PongC");
     SetTargetFPS(60);
-    fork();
     while (!WindowShouldClose())
         {
 
