@@ -1,7 +1,5 @@
 #include <stdio.h>
-
 #include "include/raylib.h"
-#include "include/raymath.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -37,7 +35,7 @@ void UpdateBall(Ball* ball)
     if (ball->pos.y + ball->radius >= GetScreenHeight() || ball->pos.y - ball->radius <= 0) {
         ball->speedY *= -1;
     }
-    if (ball->pos.x  - 200  + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) {
+    if (ball->pos.x  - 200   + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) {
         ball->speedX *= -1;
     }
 }
@@ -57,7 +55,7 @@ int main()
 
     Ball Ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 2, /*int speedY*/ 2};
 
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "pong-c");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "pong-c (raylib)");
 
     SetTargetFPS(WINDOW_FPS);
 
@@ -73,9 +71,6 @@ int main()
 
 
             UpdateBall(&Ball1);
-            /*if (CheckCollisionCircleRec(Vector2{Ball1.posX, Ball1.pos.y}, Ball1.radius, Rectangle{Paddle1.pos.x, Paddle1.pos.y, Paddle1.width, Paddle1.height})) {
-                    printf("yes");
-            }*/
 
             CheckPaddleOutOfBounds(&Paddle1);
             CheckPaddleOutOfBounds(&Paddle2);
@@ -92,5 +87,6 @@ int main()
         }
     CloseWindow();
     printf("Goodbye\n");
+    while(1);
 
 }
