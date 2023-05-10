@@ -59,7 +59,7 @@ int main()
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "pong-c");
 
-    SetTargetFPS(144);
+    SetTargetFPS(WINDOW_FPS);
 
     while (!WindowShouldClose())
         {
