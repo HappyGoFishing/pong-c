@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1684100567 source:c:\users\kiera\desktop\repos\pong-c\main.c
+1684109104 source:c:\users\kiera\desktop\repos\pong-c\main.c
 	<stdio.h>
-	"include/raylib.h"
 	<unistd.h>
+	"include/raylib.h"
 
 1683635196 c:\users\kiera\desktop\repos\pong-c\include\raylib.h
 	<stdarg.h>
@@ -10,4 +10,14 @@
 
 1683635196 c:\users\kiera\desktop\repos\pong-c\include\raymath.h
 	<math.h>
+
+1684107602 c:\users\kiera\desktop\repos\pong-c\backend.c
+
+1684117268 source:c:\users\kiera\desktop\repos\pong-c\pong.c
+	<stdio.h>
+	"include/raylib.h"
+	"include/pong-c/pong.h"
+	<unistd.h>
+
+1684115956 c:\users\kiera\desktop\repos\pong-c\include\pong-c\pong.h
 

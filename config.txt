@@ -1,0 +1,5 @@
+work in progress config file for pong-c. 
+planned options are:
+
+use_ttf 		false/true
+use_audio	false/true
