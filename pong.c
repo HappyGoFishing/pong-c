@@ -1,11 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-
 #include "include/raylib.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-#define WINDOW_FPS 144
+#define WINDOW_FPS 144.0
 
 /*Type declarations*/
 typedef struct
@@ -37,17 +35,17 @@ void UpdateBall(Ball* ball)
     ball->pos.y += ball->speed.y;
 
     if (ball->pos.y + ball->radius >= GetScreenHeight() || ball->pos.y - ball->radius <= 0) {
-        ball->speed.y *= -1;
+        ball->speed.y *= -1.0;
     }
-    if (ball->pos.x  - 200   + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) {
-        ball->speed.x *= -1;
+    if (ball->pos.x  - 200.0   + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) {
+        ball->speed.x *= -1.0;
     }
 }
 
 void CheckPaddleOutOfBounds(Paddle* paddle) {
     //Checks if a paddle's position exceeds the window bounds and stops it.
-    if (paddle->pos.y < -1) paddle->pos.y = 1;
-            if (paddle->pos.y >= WINDOW_HEIGHT - 80) paddle->pos.y = WINDOW_HEIGHT - 80;
+    if (paddle->pos.y < -1.0) paddle->pos.y = 1.0;
+            if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
             if (paddle->pos.y < -1) paddle->pos.y = 1;
 }
 
@@ -62,8 +60,8 @@ int main(int argc, char* argv[])
         printf("program received no arguments\n");
     }
 
-    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH/2.0 - 150, 4, 20, 90};
-    Paddle player2 = {5.0, WINDOW_WIDTH/2.0 - 150, 4, 20, 90};
+    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0};
+    Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0};
     Ball Ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 2, /*int speedY*/ 2};
 
     const char msg[] ="Pong in C";
