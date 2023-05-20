@@ -4,7 +4,7 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define WINDOW_FPS 144.0
-#define WINNING_SCORE 5
+#define WINNING_SCORE 2
 typedef struct
 {
     Vector2 pos;
@@ -61,7 +61,13 @@ void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle)
         }
 }
 
-
+void Victory(char victory_message[])
+{
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, victory_message);
+    while (!WindowShouldClose())
+    {
+    }
+}
 int main(int argc, char* argv[])
 {
     if (argc > 1)
@@ -108,19 +114,23 @@ int main(int argc, char* argv[])
             {
                     player1.score++;
             }
-            if (player1.score >= WINNING_SCORE)
+            if (player1.score == WINNING_SCORE)
             {
                 printf("Player 1 Wins!\n");
                 return 0;
+
             }
 
             if (ball1.pos.x - ball1.radius <= 0)
             {
                     player2.score++;
             }
-            if (player2.score >= WINNING_SCORE)
+            if (player2.score == WINNING_SCORE)
             {
                 printf("Player 2 Wins!\n");
+                return 0;
+
+
             }
 
 
