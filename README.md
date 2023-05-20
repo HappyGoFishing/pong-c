@@ -1,7 +1,5 @@
 # pong-c
-Kieran's Pong clone in C with RayLib.
-
-RayLib is Licensed under the [zlib License](https://raw.githubusercontent.com/raysan5/raylib/master/LICENSE).
+Kieran's Pong clone written in C with [RayLib](https://github.com/raysan5/raylib).
 
 ## Building
 ### Recommended method via Makefile
