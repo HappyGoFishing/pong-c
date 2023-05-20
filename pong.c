@@ -12,9 +12,9 @@ typedef struct
     float width;
     float height;
     int score;
-    char name[10]
+    char name[10];
 
-} Paddle;
+}Paddle;
 
 typedef struct
 {
@@ -72,23 +72,22 @@ int main(int argc, char* argv[])
 {
     if (argc > 1)
     {
-        printf("program arguemts: %s\n",argv[1]);
+        printf("program arguments: %s\n",argv[1]);
     }
     else
     {
         printf("program received no arguments\n");
     }
 
-    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0, 0, "Player 1"};
-    Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0, 0, "Player 2"};
+    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0, 0};
+    Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0, 0};
     Ball ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 2, /*int speedY*/ 2};
 
-    const char msg[] ="Pong in C (raylib)";
+    const char msg[] ="Kieran's Pong in C (raylib)";
     ;
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, msg);
     Font ndsbios = LoadFontEx("assets/fonts/nintendo_ds_bios/Nintendo-DS-BIOS.ttf",36 ,0, 255);
-    const int score_font_size = 30;
     SetTargetFPS(WINDOW_FPS);
     while (!WindowShouldClose())
         {
