@@ -71,11 +71,11 @@ void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle)
     }
 }
 
-void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddle2) 
+void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddle2)
 {
     ball->pos.x = WINDOW_WIDTH / 2.0;
     ball->pos.y = WINDOW_HEIGHT / 2.0;
-    
+
     paddle1->pos.x = WINDOW_WIDTH - 25.0;
     paddle1->pos.y = WINDOW_WIDTH / 2.0 - 150.0;
     paddle1->score = 0;
@@ -96,11 +96,12 @@ int main(int argc, char* argv[])
         int winscore_as_int = atoi(argv[1]);
         game.winning_score = winscore_as_int;
         printf("CLI argument %i set as game.winning_score\n",game.winning_score);
-    } 
-    else 
+    }
+    else
     {
         printf("CLI recieved no arguments, using default game.winning_score = 5\n");
     }
+
     Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
     Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
     Ball ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 4, /*int speedY*/ 4};
@@ -137,7 +138,7 @@ int main(int argc, char* argv[])
                 game.is_won = true;
                 //DrawTextEx(ndsbios, "Green Wins!", (Vector2){20, WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
                 SetWindowTitle("Green Won the last match!");
-                
+
 
 
             }
@@ -152,9 +153,9 @@ int main(int argc, char* argv[])
                 game.is_won = true;
                 //DrawTextEx(ndsbios, "Blue Wins!", (Vector2){WINDOW_WIDTH -190,WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
                 SetWindowTitle("Blue Won the last match!");
-                
-                
-                
+
+
+
             }
 
             BeginDrawing();
@@ -173,9 +174,9 @@ int main(int argc, char* argv[])
             if (game.is_won)
             {
                 ResetGame(&ball1, &game, &player1, &player2);
-            }   
+            }
 
-                
+
 
             EndDrawing();
         }
