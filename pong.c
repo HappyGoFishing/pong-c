@@ -91,10 +91,11 @@ void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddl
 int main(int argc, char* argv[])
 {
     GameState game = {false, 5};
+    printf("game.winning_score = %i\n",game.winning_score);
 
     Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
     Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
-    Ball ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 4, /*int speedY*/ 4};
+    Ball ball1 = {WINDOW_WIDTH / 2.0, WINDOW_HEIGHT / 2.0, 20, 4, 4};
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib) ");
 
@@ -128,9 +129,6 @@ int main(int argc, char* argv[])
                 game.is_won = true;
                 //DrawTextEx(ndsbios, "Green Wins!", (Vector2){20, WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
                 SetWindowTitle("Green Won the last match!");
-
-
-
             }
 
             if (ball1.pos.x - ball1.radius <= 0)
@@ -143,9 +141,6 @@ int main(int argc, char* argv[])
                 game.is_won = true;
                 //DrawTextEx(ndsbios, "Blue Wins!", (Vector2){WINDOW_WIDTH -190,WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
                 SetWindowTitle("Blue Won the last match!");
-
-
-
             }
 
             BeginDrawing();
@@ -164,12 +159,11 @@ int main(int argc, char* argv[])
             if (game.is_won)
             {
                 ResetGame(&ball1, &game, &player1, &player2);
+
             }
-
-
-
             EndDrawing();
         }
     CloseWindow();
     return 0;
 }
+
