@@ -1,10 +1,20 @@
+/********************************************************************************************************************/
+//By Kieran Crossland, "finished" 20th May 2023, Licensed GPL3. Written in raylib. [https://github.com/raysan5/raylib]
+//This is the first real program that I've written and finished in C! ;)
+/********************************************************************************************************************/
 #include <stdio.h>
 #include "include/raylib.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-#define WINDOW_FPS 144.0
-#define WINNING_SCORE 2
+#define WINDOW_FPS 60.0
+
+typedef struct
+{
+    bool is_won;
+    int winning_score;
+
+} GameState;
 typedef struct
 {
     Vector2 pos;
@@ -12,18 +22,16 @@ typedef struct
     float width;
     float height;
     int score;
-    char name[10];
 
-}Paddle;
+} Paddle;
 
 typedef struct
 {
     Vector2 pos;
     float radius;
     Vector2 speed;
-}Ball;
 
-/*Beginning of code*/
+} Ball;
 
 void DrawBall(Ball* ball)
 {
@@ -45,6 +53,11 @@ void UpdateBall(Ball* ball)
     }
 }
 
+void ResetBall(Ball*  ball)
+{
+    ball->pos.x = WINDOW_HEIGHT /2.0;
+    ball->pos.y = WINDOW_WIDTH /2.0;
+}
 void CheckPaddleOutOfBounds(Paddle* paddle)
 {
     //Checks if a paddle's position exceeds the window bounds and stops it.
@@ -56,38 +69,48 @@ void CheckPaddleOutOfBounds(Paddle* paddle)
 void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle)
 {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))
-        {
-            ball->speed.x*= -1;
-        }
-}
-
-void Victory(char victory_message[])
-{
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, victory_message);
-    while (!WindowShouldClose())
     {
+        ball->speed.x*= -1;
     }
 }
+
+void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddle2) 
+{
+    ball->pos.x = WINDOW_WIDTH / 2.0;
+    ball->pos.y = WINDOW_HEIGHT / 2.0;
+    
+    paddle1->pos.x = WINDOW_WIDTH - 25.0;
+    paddle1->pos.y = WINDOW_WIDTH / 2.0 - 150.0;
+    paddle1->score = 0;
+
+    paddle2->pos.x = 5.0;
+    paddle2->pos.y = WINDOW_WIDTH / 2.0 - 150.0;
+    paddle2->score = 0;
+
+    game_state->is_won = false;
+}
+
 int main(int argc, char* argv[])
 {
-    if (argc > 1)
+    GameState game = {false, 5};
+    if (argc >= 1)
     {
-        printf("program arguments: %s\n",argv[1]);
-    }
-    else
+        int winscore_as_int = atoi(argv[1]);
+        game.winning_score = winscore_as_int;
+        printf("CLI argument %i set as game.winning_score\n",game.winning_score);
+    } 
+    else 
     {
-        printf("program received no arguments\n");
+        printf("CLI recieved no arguments, using default game.winning_score = 5\n");
     }
+    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
+    Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
+    Ball ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 4, /*int speedY*/ 4};
 
-    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0, 0};
-    Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 4.0, 20.0, 90.0, 0};
-    Ball ball1 = { /*Vector2 pos.x*/ WINDOW_WIDTH / 2.0, /*Vector2 pos.y*/ WINDOW_HEIGHT / 2.0, /*float radius*/ 20, /*int speedX*/ 2, /*int speedY*/ 2};
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib) ");
 
-    const char msg[] ="Kieran's Pong in C (raylib)";
-    ;
-
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, msg);
     Font ndsbios = LoadFontEx("assets/fonts/nintendo_ds_bios/Nintendo-DS-BIOS.ttf",36 ,0, 255);
+
     SetTargetFPS(WINDOW_FPS);
     while (!WindowShouldClose())
         {
@@ -106,17 +129,18 @@ int main(int argc, char* argv[])
             CheckBallTouchingPaddle(&ball1, &player1);
             CheckBallTouchingPaddle(&ball1, &player2);
 
-            //UpdateScore(&ball1, &player1);
-            //UpdateScore(&ball1, &player2);
-
             if (ball1.pos.x  - 200 + ball1.radius >= GetScreenHeight())
             {
                     player1.score++;
             }
-            if (player1.score == WINNING_SCORE)
+            if (player1.score >= game.winning_score)
             {
-                printf("Player 1 Wins!\n");
-                return 0;
+                printf("Green Wins!\n");
+                game.is_won = true;
+                //DrawTextEx(ndsbios, "Green Wins!", (Vector2){20, WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
+                SetWindowTitle("Green Won the last match!");
+                
+
 
             }
 
@@ -124,22 +148,20 @@ int main(int argc, char* argv[])
             {
                     player2.score++;
             }
-            if (player2.score == WINNING_SCORE)
+            if (player2.score >= game.winning_score)
             {
-                printf("Player 2 Wins!\n");
-                return 0;
-
-
+                printf("Blue Wins!\n");
+                game.is_won = true;
+                //DrawTextEx(ndsbios, "Blue Wins!", (Vector2){WINDOW_WIDTH -190,WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
+                SetWindowTitle("Blue Won the last match!");
+                
+                
+                
             }
 
-
-            /*if (CheckCollisionCircleRec((Vector2){ball1.pos.x, ball1.pos.y}, ball1.radius, (Rectangle){player1.pos.x, player1.pos.y, player1.width, player1.height}))
-            {
-                printf("IT WORKED");
-            }*/
-
             BeginDrawing();
-
+            if (!game.is_won)
+            {
                 ClearBackground(BLACK);
 
                 DrawTextEx(ndsbios, TextFormat("%i", player1.score), (Vector2){10.0f, 10.0f},(float)ndsbios.baseSize, 4, GREEN);
@@ -149,6 +171,13 @@ int main(int argc, char* argv[])
                 DrawRectangle(player2.pos.x, player2.pos.y, player2.width, player2.height, DARKGREEN);
 
                 DrawBall(&ball1);
+            }
+            if (game.is_won)
+            {
+                ResetGame(&ball1, &game, &player1, &player2);
+            }   
+
+                
 
             EndDrawing();
         }
