@@ -4,6 +4,7 @@
 /********************************************************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "include/raylib.h"
 
 #define WINDOW_WIDTH 800
@@ -54,11 +55,6 @@ void UpdateBall(Ball* ball)
     }
 }
 
-void ResetBall(Ball*  ball)
-{
-    ball->pos.x = WINDOW_HEIGHT /2.0;
-    ball->pos.y = WINDOW_WIDTH /2.0;
-}
 void CheckPaddleOutOfBounds(Paddle* paddle)
 {
     //Checks if a paddle's position exceeds the window bounds and stops it.
@@ -89,6 +85,7 @@ void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddl
     paddle2->score = 0;
 
     game_state->is_won = false;
+    printf("Reset GameState\n");
 }
 
 int main(int argc, char* argv[])
