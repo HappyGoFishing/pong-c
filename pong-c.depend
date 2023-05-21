@@ -13,8 +13,9 @@
 
 1684107602 c:\users\kiera\desktop\repos\pong-c\backend.c
 
-1684633360 source:c:\users\kiera\desktop\repos\pong-c\pong.c
+1684686542 source:c:\users\kiera\desktop\repos\pong-c\pong.c
 	<stdio.h>
+	<stdlib.h>
 	"include/raylib.h"
 
 1684115956 c:\users\kiera\desktop\repos\pong-c\include\pong-c\pong.h

@@ -91,16 +91,6 @@ void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddl
 int main(int argc, char* argv[])
 {
     GameState game = {false, 5};
-    if (argc >= 1)
-    {
-        int winscore_as_int = atoi(argv[1]);
-        game.winning_score = winscore_as_int;
-        printf("CLI argument %i set as game.winning_score\n",game.winning_score);
-    }
-    else
-    {
-        printf("CLI recieved no arguments, using default game.winning_score = 5\n");
-    }
 
     Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
     Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
