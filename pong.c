@@ -3,6 +3,7 @@
 //This is the first real program that I've written and finished in C! ;)
 /********************************************************************************************************************/
 #include <stdio.h>
+#include <stdlib.h>
 #include "include/raylib.h"
 
 #define WINDOW_WIDTH 800
