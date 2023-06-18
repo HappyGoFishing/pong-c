@@ -6,8 +6,8 @@ typedef struct
 {
     bool is_won;
     int winning_score;
-
 } GameState;
+
 typedef struct
 {
     Vector2 pos;
@@ -15,7 +15,6 @@ typedef struct
     float width;
     float height;
     int score;
-
 } Paddle;
 
 typedef struct
@@ -23,5 +22,4 @@ typedef struct
     Vector2 pos;
     float radius;
     Vector2 speed;
-
 } Ball;
