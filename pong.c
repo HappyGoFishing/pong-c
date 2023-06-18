@@ -4,36 +4,8 @@
 /********************************************************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "include/raylib.h"
-
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-#define WINDOW_FPS 60.0
-
-typedef struct
-{
-    bool is_won;
-    int winning_score;
-
-} GameState;
-typedef struct
-{
-    Vector2 pos;
-    float speed;
-    float width;
-    float height;
-    int score;
-
-} Paddle;
-
-typedef struct
-{
-    Vector2 pos;
-    float radius;
-    Vector2 speed;
-
-} Ball;
+#include "include/pong.h"
 
 void DrawBall(Ball* ball)
 {
@@ -59,16 +31,12 @@ void CheckPaddleOutOfBounds(Paddle* paddle)
 {
     //Checks if a paddle's position exceeds the window bounds and stops it.
     if (paddle->pos.y < -1.0) paddle->pos.y = 1.0;
-            if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
-            if (paddle->pos.y < -1) paddle->pos.y = 1;
+    if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
 }
 
 void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle)
 {
-    if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))
-    {
-        ball->speed.x*= -1;
-    }
+    if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
 
 void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddle2)
