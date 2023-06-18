@@ -1,4 +1,4 @@
-BUILD_DIR=build
+BUILD_DIR=bin
 
 windows:
 	gcc *.c -Wall -std=c99 -Wno-missing-braces -L lib/ms-windows -lraylib -lopengl32 -lgdi32 -lwinmm -o $(BUILD_DIR)/pong-c-windows
