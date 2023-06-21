@@ -5,7 +5,7 @@
 typedef struct
 {
     bool is_won;
-    int winning_score;
+    int max_score;
 } GameState;
 
 typedef struct

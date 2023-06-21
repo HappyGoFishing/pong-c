@@ -59,7 +59,7 @@ void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddl
 int main(int argc, char* argv[])
 {
     GameState game = {false, 5};
-    printf("game.winning_score = %i\n",game.winning_score);
+    printf("game.max_score = %i\n",game.max_score);
 
     Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
     Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
             {
                     player1.score++;
             }
-            if (player1.score >= game.winning_score)
+            if (player1.score >= game.max_score)
             {
                 printf("Green Wins!\n");
                 game.is_won = true;
@@ -99,11 +99,11 @@ int main(int argc, char* argv[])
                 SetWindowTitle("Green Won the last match!");
             }
 
-            if (ball1.pos.x - ball1.radius <= 0)
+            if (ball1.pos.x - ball1.radius <= 0)./
             {
                     player2.score++;
             }
-            if (player2.score >= game.winning_score)
+            if (player2.score >= game.max_score)
             {
                 printf("Blue Wins!\n");
                 game.is_won = true;
