@@ -2,6 +2,7 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_FPS 60.0
 #define MAX_SCORE 5
+
 typedef struct {
     bool is_won;
 } GameState;

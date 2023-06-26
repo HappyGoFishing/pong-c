@@ -1,11 +1,12 @@
-/********************************************************************************************************************/
-//By Kieran Crossland, "finished" 20th May 2023, Licensed GPL3. Written in raylib. [https://github.com/raysan5/raylib]
-//This is the first real program that I've written and finished in C! ;)
-/********************************************************************************************************************/
+/********************************************************************************************************************
+By Kieran Crossland, "finished" 20th May 2023, Licensed GPL3. Written in raylib. [https://github.com/raysan5/raylib]
+This is the first real project that I've written and finished in C! ;)
+********************************************************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "include/raylib.h"
-#include "include/pong.h"
+#include "pong.h"
 
 void DrawBall(Ball* ball) {
     DrawCircle(ball->pos.x, ball->pos.y, ball->radius, WHITE);
@@ -45,8 +46,7 @@ void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddl
     printf("Reset GameState\n");
 }
 
-int main()
-{
+int main() {
     GameState game = {
         false
     };

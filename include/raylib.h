@@ -174,7 +174,6 @@
 #define BEIGE      CLITERAL(Color){ 211, 176, 131, 255 }   // Beige
 #define BROWN      CLITERAL(Color){ 127, 106, 79, 255 }    // Brown
 #define DARKBROWN  CLITERAL(Color){ 76, 63, 47, 255 }      // Dark Brown
-
 #define WHITE      CLITERAL(Color){ 255, 255, 255, 255 }   // White
 #define BLACK      CLITERAL(Color){ 0, 0, 0, 255 }         // Black
 #define BLANK      CLITERAL(Color){ 0, 0, 0, 0 }           // Blank (Transparent)
