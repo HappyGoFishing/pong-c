@@ -7,40 +7,29 @@
 #include "include/raylib.h"
 #include "include/pong.h"
 
-void DrawBall(Ball* ball)
-{
+void DrawBall(Ball* ball) {
     DrawCircle(ball->pos.x, ball->pos.y, ball->radius, WHITE);
 }
 
-void UpdateBall(Ball* ball)
-{
+void UpdateBall(Ball* ball) {
     ball->pos.x += ball->speed.x;
     ball->pos.y += ball->speed.y;
 
-    if (ball->pos.y + ball->radius >= GetScreenHeight() || ball->pos.y - ball->radius <= 0)
-    {
-        ball->speed.y *= -1.0;
-    }
-    if (ball->pos.x  - 200 + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0)
-    {
-        ball->speed.x *= -1.0;
-    }
+    if (ball->pos.y + ball->radius >= GetScreenHeight() || ball->pos.y - ball->radius <= 0) ball->speed.y *= -1.0;
+    if (ball->pos.x  - 200 + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) ball->speed.x *= -1.0;
 }
 
-void CheckPaddleOutOfBounds(Paddle* paddle)
-{
+void CheckPaddleOutOfBounds(Paddle* paddle) {
     //Checks if a paddle's position exceeds the window bounds and stops it.
     if (paddle->pos.y < -1.0) paddle->pos.y = 1.0;
     if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
 }
 
-void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle)
-{
+void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle) {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
 
-void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddle2)
-{
+void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddle2) {
     ball->pos.x = WINDOW_WIDTH / 2.0;
     ball->pos.y = WINDOW_HEIGHT / 2.0;
 
@@ -56,22 +45,43 @@ void ResetGame(Ball* ball, GameState* game_state, Paddle* paddle1, Paddle* paddl
     printf("Reset GameState\n");
 }
 
-int main(int argc, char* argv[])
+int main()
 {
-    GameState game = {false, 5};
-    printf("game.max_score = %i\n",game.max_score);
+    GameState game = {
+        false
+    };
+    printf("MAX_SCORE = %i\n", MAX_SCORE);
 
-    Paddle player1 = {WINDOW_WIDTH - 25.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
-    Paddle player2 = {5.0, WINDOW_WIDTH / 2.0 - 150.0, 8.0, 20.0, 90.0, 0};
-    Ball ball1 = {WINDOW_WIDTH / 2.0, WINDOW_HEIGHT / 2.0, 20, 4, 4};
+    Paddle player1 = {
+        WINDOW_WIDTH - 25.0,
+        WINDOW_WIDTH / 2.0 - 150.0,
+        8.0,
+        20.0,
+        90.0,
+        0
+    };
+    Paddle player2 = {
+        5.0,
+        WINDOW_WIDTH / 2.0 - 150.0,
+        8.0,
+        20.0,
+        90.0,
+        0
+    };
+    Ball ball1 = {
+        WINDOW_WIDTH / 2.0,
+        WINDOW_HEIGHT / 2.0,
+        20,
+        4,
+        4
+    };
 
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib) ");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib)");
 
     Font ndsbios = LoadFontEx("assets/fonts/nintendo_ds_bios/Nintendo-DS-BIOS.ttf",36 ,0, 255);
 
     SetTargetFPS(WINDOW_FPS);
-    while (!WindowShouldClose())
-        {
+    while (!WindowShouldClose()) {
             //Controls for player 1
             if (IsKeyDown(KEY_UP)) player1.pos.y -= player1.speed;
             if (IsKeyDown(KEY_DOWN)) player1.pos.y += player1.speed;
@@ -87,24 +97,19 @@ int main(int argc, char* argv[])
             CheckBallTouchingPaddle(&ball1, &player1);
             CheckBallTouchingPaddle(&ball1, &player2);
 
-            if (ball1.pos.x  - 200 + ball1.radius >= GetScreenHeight())
-            {
-                    player1.score++;
-            }
-            if (player1.score >= game.max_score)
-            {
+            if (ball1.pos.x  - 200 + ball1.radius >= GetScreenHeight()) player1.score++;
+
+            if (player1.score >= MAX_SCORE) {
                 printf("Green Wins!\n");
                 game.is_won = true;
                 //DrawTextEx(ndsbios, "Green Wins!", (Vector2){20, WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
                 SetWindowTitle("Green Won the last match!");
             }
 
-            if (ball1.pos.x - ball1.radius <= 0)./
-            {
+            if (ball1.pos.x - ball1.radius <= 0) {
                     player2.score++;
             }
-            if (player2.score >= game.max_score)
-            {
+            if (player2.score >= MAX_SCORE) {
                 printf("Blue Wins!\n");
                 game.is_won = true;
                 //DrawTextEx(ndsbios, "Blue Wins!", (Vector2){WINDOW_WIDTH -190,WINDOW_HEIGHT - 50.f},(float)ndsbios.baseSize, 4, YELLOW);
@@ -112,8 +117,7 @@ int main(int argc, char* argv[])
             }
 
             BeginDrawing();
-            if (!game.is_won)
-            {
+            if (!game.is_won) {
                 ClearBackground(BLACK);
 
                 DrawTextEx(ndsbios, TextFormat("%i", player1.score), (Vector2){10.0f, 10.0f},(float)ndsbios.baseSize, 4, GREEN);
@@ -124,10 +128,8 @@ int main(int argc, char* argv[])
 
                 DrawBall(&ball1);
             }
-            if (game.is_won)
-            {
+            if (game.is_won) {
                 ResetGame(&ball1, &game, &player1, &player2);
-
             }
             EndDrawing();
         }

@@ -1,15 +1,12 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define WINDOW_FPS 60.0
-
-typedef struct
-{
+#define MAX_SCORE 5
+typedef struct {
     bool is_won;
-    int max_score;
 } GameState;
 
-typedef struct
-{
+typedef struct {
     Vector2 pos;
     float speed;
     float width;
@@ -17,8 +14,7 @@ typedef struct
     int score;
 } Paddle;
 
-typedef struct
-{
+typedef struct {
     Vector2 pos;
     float radius;
     Vector2 speed;
