@@ -15,11 +15,11 @@ void DrawBall(Ball* ball) {
 void UpdateBall(Ball* ball) {
     ball->pos.x += ball->speed.x;
     ball->pos.y += ball->speed.y;
-
+}
+void CheckBallOutOfBounds(Ball* ball) {
     if (ball->pos.y + ball->radius >= GetScreenHeight() || ball->pos.y - ball->radius <= 0) ball->speed.y *= -1.0;
     if (ball->pos.x  - 200 + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) ball->speed.x *= -1.0;
 }
-
 void CheckPaddleOutOfBounds(Paddle* paddle) {
     //Checks if a paddle's position exceeds the window bounds and stops it.
     if (paddle->pos.y < -1.0) paddle->pos.y = 1.0;
@@ -93,7 +93,7 @@ int main() {
 
             CheckPaddleOutOfBounds(&player1);
             CheckPaddleOutOfBounds(&player2);
-
+            CheckBallOutOfBounds(&ball1);
             CheckBallTouchingPaddle(&ball1, &player1);
             CheckBallTouchingPaddle(&ball1, &player2);
 
@@ -119,7 +119,6 @@ int main() {
             BeginDrawing();
             if (!game.is_won) {
                 ClearBackground(BLACK);
-
                 DrawTextEx(ndsbios, TextFormat("%i", player1.score), (Vector2){10.0f, 10.0f},(float)ndsbios.baseSize, 4, GREEN);
                 DrawTextEx(ndsbios, TextFormat("%i", player2.score), (Vector2){WINDOW_WIDTH -25, 10.0f},(float)ndsbios.baseSize, 4, BLUE);
 
