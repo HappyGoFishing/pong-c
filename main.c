@@ -12,7 +12,7 @@ void DrawBall(Ball* ball) {
     DrawCircle(ball->pos.x, ball->pos.y, ball->radius, WHITE);
 }
 
-void UpdateBall(Ball* ball) {
+void UpdateBallPosition(Ball* ball) {
     ball->pos.x += ball->speed.x;
     ball->pos.y += ball->speed.y;
 }
@@ -23,7 +23,7 @@ void CheckBallOutOfBounds(Ball* ball) {
 void CheckPaddleOutOfBounds(Paddle* paddle) {
     //Checks if a paddle's position exceeds the window bounds and stops it.
     if (paddle->pos.y < -1.0) paddle->pos.y = 1.0;
-    if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
+    if (paddle->pos.y >= WINDOW_WIDTH - 80.0) paddle->pos.y = WINDOW_WIDTH - 80.0;
 }
 
 void CheckBallTouchingPaddle(Ball* ball, Paddle* paddle) {
@@ -89,11 +89,13 @@ int main() {
             if (IsKeyDown(KEY_W)) player2.pos.y -= player2.speed;
             if (IsKeyDown(KEY_S)) player2.pos.y += player2.speed;
 
-            UpdateBall(&ball1);
+            UpdateBallPosition(&ball1);
 
             CheckPaddleOutOfBounds(&player1);
             CheckPaddleOutOfBounds(&player2);
+
             CheckBallOutOfBounds(&ball1);
+            
             CheckBallTouchingPaddle(&ball1, &player1);
             CheckBallTouchingPaddle(&ball1, &player2);
 
