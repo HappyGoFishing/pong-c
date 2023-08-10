@@ -30,7 +30,7 @@ void draw_ball(Ball* ball) {
     DrawCircle(ball->pos.x, ball->pos.y, ball->radius, WHITE);
 }
 
-void ball_update_position(Ball* ball) {
+void update_ball_position(Ball* ball) {
     ball->pos.x += ball->speed.x;
     ball->pos.y += ball->speed.y;
 }
@@ -50,7 +50,7 @@ void check_ball_touching_paddle(Ball* ball, Paddle* paddle) {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
 
-void game_reset(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
+void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
     ball->pos.x = WINDOW_WIDTH / 2.0;
     ball->pos.y = WINDOW_HEIGHT / 2.0;
 
@@ -66,15 +66,16 @@ void game_reset(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
 }
 
 int main(int argc, char **argv) {
-    int MAX_SCORE = 3;
+    bool game_won = false;
+    bool use_inbuilt_fonts = true;
+    int winning_score = 3;
     if (argc > 1) {
-        if (strcmp(argv[1], "--max_score") == 0) {
-        MAX_SCORE = atoi(argv[2]);
+        if (strcmp(argv[1], "--winning_score") == 0) {
+        winning_score = atoi(argv[2]);
         }
     }
     
-    bool game_won = false;
-    printf("MAX_SCORE = %i\n", MAX_SCORE);
+    printf("winning_score: %i\n", winning_score);
 
     Paddle player1 = {
         WINDOW_WIDTH - 25.0,
@@ -115,7 +116,7 @@ int main(int argc, char **argv) {
             if (IsKeyDown(KEY_W)) player2.pos.y -= player2.speed;
             if (IsKeyDown(KEY_S)) player2.pos.y += player2.speed;
 
-            ball_update_position(&ball1);
+            update_ball_position(&ball1);
 
             prevent_paddle_out_of_bounds(&player1);
             prevent_paddle_out_of_bounds(&player2);
@@ -127,7 +128,7 @@ int main(int argc, char **argv) {
 
             if (ball1.pos.x  - 200 + ball1.radius >= GetScreenHeight()) player1.score++;
 
-            if (player1.score >= MAX_SCORE) {
+            if (player1.score >= winning_score) {
                 printf("Green Wins!\n");
                 game_won = true;
                 SetWindowTitle("Green Won the last match!");
@@ -136,7 +137,7 @@ int main(int argc, char **argv) {
             if (ball1.pos.x - ball1.radius <= 0) {
                     player2.score++;
             }
-            if (player2.score >= MAX_SCORE) {
+            if (player2.score >= winning_score) {
                 printf("Blue Wins!\n");
                 game_won = true;
                 SetWindowTitle("Blue Won the last match!");
@@ -154,7 +155,7 @@ int main(int argc, char **argv) {
                 draw_ball(&ball1);
             }
             else if (game_won == true) {
-                game_reset(&ball1, &player1, &player2);
+                reset_game(&ball1, &player1, &player2);
                 game_won = false;
             }
 
