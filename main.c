@@ -46,7 +46,7 @@ void prevent_paddle_out_of_bounds(Paddle* paddle) {
     if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
 }
 
-void check_if_balls_touching(Ball* ball, Paddle* paddle) {
+void check_ball_touching_paddle(Ball* ball, Paddle* paddle) {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
 
@@ -65,22 +65,8 @@ void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
     printf("Reset game state\n");
 }
 
-
-unsigned int main(int argc, char** argv) {
-    if (argc < 1) {
-        fprintf(stderr, "Not enough args\n"); 
-        return 0;
-    } else {
-        std::Vector args = convert_cstring_to_stdvector(char* argv);
-        
-        
-    }
-}
-
-
 int main(int argc, char** argv) {
     bool game_won = false;
-    bool use_inbuilt_fonts = true;
     int winning_score = 3;
     if (argc > 1) {
         if (strcmp(argv[1], "--winning_score") == 0) {
