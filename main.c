@@ -12,6 +12,13 @@ This is the first real project that I've written and finished in C! ;)
 #define WINDOW_HEIGHT 600
 #define WINDOW_FPS 60.0
 #define SCORELOG_FILE "scores.log"
+#ifdef _WIN32
+#define PLATFORM "win32"
+#elif __linux__
+#define PLATFORM "linux"
+#elif __APPLE__
+#define PLATFORM "macos"
+#endif
 
 typedef struct {
     Vector2 pos;
@@ -67,7 +74,7 @@ int append_scorelog_file(const int p1score, const int p2score) {
     }
     fseek(fp_scorelog, 0, SEEK_END);
     long size = ftell(fp_scorelog);
-    if (0 == size) fprintf(fp_scorelog, "FILE CREATED: %s (https://github.com/kierancrossland/pong-c)\n\n", time_str);
+    if (0 == size) fprintf(fp_scorelog, "Created on %s on %s (https://github.com/kierancrossland/pong-c)\n\n", time_str, PLATFORM);
 
     if (p1score > p2score) fprintf(fp_scorelog, "%s g%i b%i green won\n", time_str, p1score, p2score);
     if (p1score < p2score) fprintf(fp_scorelog, "%s g%i b%i blue won\n", time_str, p1score, p2score);
