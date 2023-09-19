@@ -5,11 +5,13 @@ This is the first real project that I've written and finished in C! ;)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "include/raylib.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define WINDOW_FPS 60.0
+#define SCORELOG_FILE "scores.log"
 
 typedef struct {
     Vector2 pos;
@@ -24,7 +26,6 @@ typedef struct {
     float radius;
     Vector2 speed;
 } Ball;
-
 
 void draw_ball(Ball* ball) {
     DrawCircle(ball->pos.x, ball->pos.y, ball->radius, WHITE);
@@ -49,6 +50,30 @@ void prevent_paddle_out_of_bounds(Paddle* paddle) {
 void check_ball_touching_paddle(Ball* ball, Paddle* paddle) {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
+char* current_time_as_str() {
+    time_t mytime = time(NULL);
+    char * time_str = ctime(&mytime);
+    time_str[strlen(time_str)-1] = '\0';
+    return time_str;
+}
+
+int append_scorelog_file(const int p1score, const int p2score) {
+    char* time_str = current_time_as_str();
+
+    FILE* fp_scorelog = fopen(SCORELOG_FILE, "a");
+    if (fp_scorelog == NULL) {
+        fprintf(stderr, "NULL FILE Pointer fp_scorelog!");
+        return 1;
+    }
+    fseek(fp_scorelog, 0, SEEK_END);
+    long size = ftell(fp_scorelog);
+    if (0 == size) fprintf(fp_scorelog, "FILE CREATED: %s (https://github.com/kierancrossland/pong-c)\n\n", time_str);
+
+    if (p1score > p2score) fprintf(fp_scorelog, "%s g%i b%i green won\n", time_str, p1score, p2score);
+    if (p1score < p2score) fprintf(fp_scorelog, "%s g%i b%i blue won\n", time_str, p1score, p2score);
+    fclose(fp_scorelog);
+    return 0;
+}
 
 void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
     ball->pos.x = WINDOW_WIDTH / 2.0;
@@ -68,12 +93,12 @@ void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
 int main(int argc, char** argv) {
     bool game_won = false;
     int winning_score = 3;
+    
     if (argc > 1) {
-        if (strcmp(argv[1], "--winning_score") == 0) {
+        if (strcmp(argv[1], "--winning-score") == 0) {
         winning_score = atoi(argv[2]);
         }
     }
-    
     printf("winning_score: %i\n", winning_score);
 
     Paddle player1 = {
@@ -154,10 +179,11 @@ int main(int argc, char** argv) {
                 draw_ball(&ball1);
             }
             else if (game_won == true) {
+
+                append_scorelog_file(player1.score, player2.score);
                 reset_game(&ball1, &player1, &player2);
                 game_won = false;
             }
-
             EndDrawing();
         }
     CloseWindow();
