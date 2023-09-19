@@ -12,13 +12,6 @@ This is the first real project that I've written and finished in C! ;)
 #define WINDOW_HEIGHT 600
 #define WINDOW_FPS 60.0
 #define SCORELOG_FILE "scores.log"
-#ifdef _WIN32
-#define PLATFORM "win32"
-#elif __linux__
-#define PLATFORM "linux"
-#elif __APPLE__
-#define PLATFORM "macos"
-#endif
 
 typedef struct {
     Vector2 pos;
@@ -39,8 +32,8 @@ void draw_ball(Ball* ball) {
 }
 
 void update_ball_position(Ball* ball) {
-    ball->pos.x += ball->speed.x;
-    ball->pos.y += ball->speed.y;
+    ball->pos.x += ball->speed.x * GetFrameTime();
+    ball->pos.y += ball->speed.y * GetFrameTime();
 }
 
 void prevent_ball_out_of_bounds(Ball* ball) {
@@ -74,7 +67,7 @@ int append_scorelog_file(const int p1score, const int p2score) {
     }
     fseek(fp_scorelog, 0, SEEK_END);
     long size = ftell(fp_scorelog);
-    if (0 == size) fprintf(fp_scorelog, "Created on %s on %s (https://github.com/kierancrossland/pong-c)\n\n", time_str, PLATFORM);
+    if (0 == size) fprintf(fp_scorelog, "Created on %s (https://github.com/kierancrossland/pong-c)\n\n", time_str);
 
     if (p1score > p2score) fprintf(fp_scorelog, "%s g%i b%i green won\n", time_str, p1score, p2score);
     if (p1score < p2score) fprintf(fp_scorelog, "%s g%i b%i blue won\n", time_str, p1score, p2score);
@@ -111,7 +104,7 @@ int main(int argc, char** argv) {
     Paddle player1 = {
         WINDOW_WIDTH - 25.0,
         WINDOW_WIDTH / 2.0 - 150.0,
-        8.0,
+        512.0,
         20.0,
         90.0,
         0
@@ -120,7 +113,7 @@ int main(int argc, char** argv) {
     Paddle player2 = {
         5.0,
         WINDOW_WIDTH / 2.0 - 150.0,
-        8.0,
+        512.0,
         20.0,
         90.0,
         0
@@ -130,22 +123,22 @@ int main(int argc, char** argv) {
         WINDOW_WIDTH / 2.0,
         WINDOW_HEIGHT / 2.0,
         20,
-        4,
-        4
+        300,
+        300,
     };
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib)");
-
+    SetWindowState(FLAG_VSYNC_HINT);
     Font ndsbios = LoadFontEx("assets/fonts/nintendo_ds_bios/Nintendo-DS-BIOS.ttf",36 ,0, 255);
 
-    SetTargetFPS(WINDOW_FPS);
+
     while (!WindowShouldClose()) {
             //Controls for player 1
-            if (IsKeyDown(KEY_UP)) player1.pos.y -= player1.speed;
-            if (IsKeyDown(KEY_DOWN)) player1.pos.y += player1.speed;
+            if (IsKeyDown(KEY_UP)) player1.pos.y -= player1.speed * GetFrameTime();
+            if (IsKeyDown(KEY_DOWN)) player1.pos.y += player1.speed * GetFrameTime();
             //Controls for player 2
-            if (IsKeyDown(KEY_W)) player2.pos.y -= player2.speed;
-            if (IsKeyDown(KEY_S)) player2.pos.y += player2.speed;
+            if (IsKeyDown(KEY_W)) player2.pos.y -= player2.speed * GetFrameTime();
+            if (IsKeyDown(KEY_S)) player2.pos.y += player2.speed * GetFrameTime();
 
             update_ball_position(&ball1);
 
@@ -186,7 +179,6 @@ int main(int argc, char** argv) {
                 draw_ball(&ball1);
             }
             else if (game_won == true) {
-
                 append_scorelog_file(player1.score, player2.score);
                 reset_game(&ball1, &player1, &player2);
                 game_won = false;
