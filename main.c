@@ -7,12 +7,7 @@ This is the first real project that I've written and finished in C! ;)
 #include <string.h>
 #include <time.h>
 #include "include/raylib.h"
-
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-#define WINDOW_FPS 60.0
-#define SCORELOG_FILE "scores.log"
-
+#include "config.h"
 typedef struct {
     Vector2 pos;
     float speed;
@@ -57,17 +52,17 @@ char* current_time_as_str() {
     return time_str;
 }
 
-int append_scorelog_file(const int p1score, const int p2score) {
+int append_score_file(const int p1score, const int p2score) {
     char* time_str = current_time_as_str();
 
     FILE* fp_scorelog = fopen(SCORELOG_FILE, "a");
     if (fp_scorelog == NULL) {
-        fprintf(stderr, "NULL FILE Pointer fp_scorelog!");
+        fprintf(stderr, "NULL file pointer :( \n");
         return 1;
     }
     fseek(fp_scorelog, 0, SEEK_END);
     long size = ftell(fp_scorelog);
-    if (0 == size) fprintf(fp_scorelog, "Created on %s (https://github.com/kierancrossland/pong-c)\n\n", time_str);
+    if (0 == size) fprintf(fp_scorelog, "Created on %s\n\n", time_str);
 
     if (p1score > p2score) fprintf(fp_scorelog, "%s g%i b%i green won\n", time_str, p1score, p2score);
     if (p1score < p2score) fprintf(fp_scorelog, "%s g%i b%i blue won\n", time_str, p1score, p2score);
@@ -87,7 +82,7 @@ void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
     paddle2->pos.y = WINDOW_WIDTH / 2.0 - 150.0;
     paddle2->score = 0;
 
-    printf("Reset game state\n");
+    printf("Reset game\n");
 }
 
 int main(int argc, char** argv) {
@@ -129,6 +124,7 @@ int main(int argc, char** argv) {
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib)");
     SetWindowState(FLAG_VSYNC_HINT);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     Font ndsbios = LoadFontEx("assets/fonts/nintendo_ds_bios/Nintendo-DS-BIOS.ttf",36 ,0, 255);
 
 
@@ -179,7 +175,7 @@ int main(int argc, char** argv) {
                 draw_ball(&ball1);
             }
             else if (game_won == true) {
-                append_scorelog_file(player1.score, player2.score);
+                if (append_score_file(player1.score, player2.score) == 1)  fprintf(stderr, "NULL file pointer :( \n");
                 reset_game(&ball1, &player1, &player2);
                 game_won = false;
             }
