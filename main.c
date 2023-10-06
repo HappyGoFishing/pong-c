@@ -1,5 +1,5 @@
 /********************************************************************************************************************
-By Kieran Crossland, "finished" 20th May 2023, Licensed GPL3. Written in raylib. [https://github.com/raysan5/raylib]
+By Kieran Crossland, "finished" 20th May 2023, Written in raylib. [https://github.com/raysan5/raylib]
 This is the first real project that I've written and finished in C! ;)
 ********************************************************************************************************************/
 #include <stdio.h>
@@ -8,6 +8,11 @@ This is the first real project that I've written and finished in C! ;)
 #include <time.h>
 #include "include/raylib.h"
 #include "config.h"
+
+#ifdef _WIN32
+#define _CRT_SECURE_NO_DEPRECATE
+#endif
+
 typedef struct {
     Vector2 pos;
     float speed;
