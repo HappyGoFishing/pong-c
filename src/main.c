@@ -6,7 +6,7 @@ This is the first real project that I've written and finished in C! ;)
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "include/raylib.h"
+#include <raylib.h>
 #include "config.h"
 
 #ifdef _WIN32
@@ -131,7 +131,6 @@ int main(int argc, char** argv) {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib)");
     SetWindowState(FLAG_VSYNC_HINT);
     SetConfigFlags(FLAG_MSAA_4X_HINT);
-    Font ndsbios = LoadFontEx("assets/fonts/nintendo_ds_bios/Nintendo-DS-BIOS.ttf",36 ,0, 255);
 
 
     while (!WindowShouldClose()) {
@@ -172,9 +171,8 @@ int main(int argc, char** argv) {
             BeginDrawing();
             if (game_won == false) {
                 ClearBackground(BLACK);
-                DrawTextEx(ndsbios, TextFormat("%i", player1.score), (Vector2){10.0f, 10.0f},(float)ndsbios.baseSize, 4, GREEN);
-                DrawTextEx(ndsbios, TextFormat("%i", player2.score), (Vector2){WINDOW_WIDTH -25, 10.0f},(float)ndsbios.baseSize, 4, BLUE);
-
+                DrawText(TextFormat("%i", player1.score), 10.0f, 10.0f, 20, GREEN);
+                DrawText(TextFormat("%i", player2.score), WINDOW_WIDTH -25, 10.0f, 20, BLUE);
                 DrawRectangle(player1.pos.x, player1.pos.y, player1.width, player1.height, DARKBLUE);
                 DrawRectangle(player2.pos.x, player2.pos.y, player2.width, player2.height, DARKGREEN);
                 
