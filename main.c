@@ -13,41 +13,41 @@ This is the first real project that I've written and finished in C! ;)
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
 
-typedef struct {
+struct Paddle {
     Vector2 pos;
     float speed;
     float width;
     float height;
     int score;
-} Paddle;
+};
 
-typedef struct {
+struct Ball {
     Vector2 pos;
     float radius;
     Vector2 speed;
-} Ball;
+};
 
-void draw_ball(Ball* ball) {
+void draw_ball(struct Ball* ball) {
     DrawCircle(ball->pos.x, ball->pos.y, ball->radius, WHITE);
 }
 
-void update_ball_position(Ball* ball) {
+void update_ball_position(struct Ball* ball) {
     ball->pos.x += ball->speed.x * GetFrameTime();
     ball->pos.y += ball->speed.y * GetFrameTime();
 }
 
-void prevent_ball_out_of_bounds(Ball* ball) {
+void prevent_ball_out_of_bounds(struct Ball* ball) {
     if (ball->pos.y + ball->radius >= GetScreenHeight() || ball->pos.y - ball->radius <= 0) ball->speed.y *= -1.0;
     if (ball->pos.x  - 200 + ball->radius >= GetScreenHeight() || ball->pos.x - ball->radius <= 0) ball->speed.x *= -1.0;
 }
 
-void prevent_paddle_out_of_bounds(Paddle* paddle) {
+void prevent_paddle_out_of_bounds(struct Paddle* paddle) {
      //Checks if a paddle's position exceeds the window bounds and stops it.
     if (paddle->pos.y < -1.0) paddle->pos.y = 1.0;
     if (paddle->pos.y >= WINDOW_HEIGHT - 80.0) paddle->pos.y = WINDOW_HEIGHT - 80.0;
 }
 
-void check_ball_touching_paddle(Ball* ball, Paddle* paddle) {
+void check_ball_touching_paddle(struct Ball* ball, struct Paddle* paddle) {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
 char* current_time_as_str() {
@@ -62,7 +62,7 @@ int append_score_file(const int p1score, const int p2score) {
 
     FILE* fp_scorelog = fopen(SCORELOG_FILE, "a");
     if (fp_scorelog == NULL) {
-        fprintf(stderr, "NULL file pointer :( \n");
+        fprintf(stderr, "fp_scorelog is NULL ptr.\n");
         return 1;
     }
     fseek(fp_scorelog, 0, SEEK_END);
@@ -75,7 +75,7 @@ int append_score_file(const int p1score, const int p2score) {
     return 0;
 }
 
-void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
+void reset_game(struct Ball* ball, struct Paddle* paddle1, struct Paddle* paddle2) {
     ball->pos.x = WINDOW_WIDTH / 2.0;
     ball->pos.y = WINDOW_HEIGHT / 2.0;
 
@@ -92,7 +92,7 @@ void reset_game(Ball* ball, Paddle* paddle1, Paddle* paddle2) {
 
 int main(int argc, char** argv) {
     bool game_won = false;
-    int winning_score = 3;
+    int winning_score = DEFAULT_MAX_SCORE;
     
     if (argc > 1) {
         if (strcmp(argv[1], "--winning-score") == 0) {
@@ -101,30 +101,31 @@ int main(int argc, char** argv) {
     }
     printf("winning_score: %i\n", winning_score);
 
-    Paddle player1 = {
-        WINDOW_WIDTH - 25.0,
-        WINDOW_WIDTH / 2.0 - 150.0,
-        512.0,
-        20.0,
-        90.0,
-        0
+    struct Paddle player1 = {
+        .pos.x = WINDOW_WIDTH - 25.0,
+        .pos.y = WINDOW_WIDTH / 2.0 - 150.0,
+        .speed = 512.0,
+        .width = 20.0,
+        .height = 90.0,
+        .score = 0
     };
 
-    Paddle player2 = {
-        5.0,
-        WINDOW_WIDTH / 2.0 - 150.0,
-        512.0,
-        20.0,
-        90.0,
-        0
+    struct Paddle player2 = {
+        .pos.x = 5.0,
+        .pos.y = WINDOW_WIDTH / 2.0 - 150.0,
+        .speed = 512.0,
+        .width = 20.0,
+        .height = 90.0,
+        .score = 0
     };
 
-    Ball ball1 = {
-        WINDOW_WIDTH / 2.0,
-        WINDOW_HEIGHT / 2.0,
-        20,
-        300,
-        300,
+    struct Ball ball1 = {
+        .pos.x = WINDOW_WIDTH / 2.0,
+        .pos.y = WINDOW_HEIGHT / 2.0,
+        .radius = 20,
+        .speed.x = 300,
+        .speed.y = 300,
+        
     };
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Kieran's Pong in C (raylib)");
