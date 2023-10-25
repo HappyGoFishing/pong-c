@@ -9,7 +9,7 @@ This is the first real project that I've written and finished in C! ;)
 #include <raylib.h>
 #include "config.h"
 
-#ifdef _WIN32
+#ifdef _WIN32 //Fix for compiling using Visual Studio.
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
 
@@ -56,11 +56,11 @@ char* current_time_as_str() {
     time_str[strlen(time_str)-1] = '\0';
     return time_str;
 }
-
+#ifdef ENABLE_SCORE_FILE
 int append_score_file(const int p1score, const int p2score) {
     char* time_str = current_time_as_str();
 
-    FILE* fp_scorelog = fopen(SCORELOG_FILE, "a");
+    FILE* fp_scorelog = fopen(SCORE_FILE, "a");
     if (fp_scorelog == NULL) {
         fprintf(stderr, "fp_scorelog is NULL ptr.\n");
         return 1;
@@ -74,6 +74,7 @@ int append_score_file(const int p1score, const int p2score) {
     fclose(fp_scorelog);
     return 0;
 }
+#endif //ENABLE_SCORE_FILE
 
 void reset_game(struct Ball* ball, struct Paddle* paddle1, struct Paddle* paddle2) {
     ball->pos.x = WINDOW_WIDTH / 2.0;
@@ -104,27 +105,27 @@ int main(int argc, char** argv) {
     struct Paddle player1 = {
         .pos.x = WINDOW_WIDTH - 25.0,
         .pos.y = WINDOW_WIDTH / 2.0 - 150.0,
-        .speed = 512.0,
-        .width = 20.0,
-        .height = 90.0,
+        .speed = PADDLE_SPEED,
+        .width = PADDLE_WIDTH,
+        .height = PADDLE_HEIGHT,
         .score = 0
     };
 
     struct Paddle player2 = {
         .pos.x = 5.0,
         .pos.y = WINDOW_WIDTH / 2.0 - 150.0,
-        .speed = 512.0,
-        .width = 20.0,
-        .height = 90.0,
+        .speed = PADDLE_SPEED,
+        .width = PADDLE_WIDTH,
+        .height = PADDLE_HEIGHT,
         .score = 0
     };
 
     struct Ball ball1 = {
         .pos.x = WINDOW_WIDTH / 2.0,
         .pos.y = WINDOW_HEIGHT / 2.0,
-        .radius = 20,
-        .speed.x = 300,
-        .speed.y = 300,
+        .radius = BALL_RADIUS,
+        .speed.x = BALL_SPEED_X,
+        .speed.y = BALL_SPEED_Y,
         
     };
 
@@ -179,7 +180,9 @@ int main(int argc, char** argv) {
                 draw_ball(&ball1);
             }
             else if (game_won == true) {
+                #ifdef ENABLE_SCORE_FILE
                 if (append_score_file(player1.score, player2.score) == 1)  fprintf(stderr, "NULL file pointer :( \n");
+                #endif //ENABLE_SCORE_FILE
                 reset_game(&ball1, &player1, &player2);
                 game_won = false;
             }
