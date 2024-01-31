@@ -8,7 +8,7 @@
 /*Score Config*/
 #define DEFAULT_MAX_SCORE 3
 #define SCORE_FILE "scores.txt"
-#define ENABLE_SCORE_FILE //Undefine for the SCORE_FILE to not be written to. 
+//#define ENABLE_SCORE_FILE //Undefine for the SCORE_FILE to not be written to. 
 
 /*Paddle Config*/
 #define PADDLE_WIDTH 20

@@ -50,13 +50,15 @@ void prevent_paddle_out_of_bounds(struct Paddle* paddle) {
 void check_ball_touching_paddle(struct Ball* ball, struct Paddle* paddle) {
     if (CheckCollisionCircleRec((Vector2){ball->pos.x, ball->pos.y}, ball->radius, (Rectangle){paddle->pos.x, paddle->pos.y, paddle->width, paddle->height}))  ball->speed.x*= -1;
 }
+
+#ifdef ENABLE_SCORE_FILE
 char* current_time_as_str() {
     time_t mytime = time(NULL);
-    char * time_str = ctime(&mytime);
+    char* time_str = ctime(&mytime);
     time_str[strlen(time_str)-1] = '\0';
     return time_str;
 }
-#ifdef ENABLE_SCORE_FILE
+
 int append_score_file(const int p1score, const int p2score) {
     char* time_str = current_time_as_str();
 
